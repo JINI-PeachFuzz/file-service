@@ -51,9 +51,10 @@ public class FileController {
      * 파일 업로드
      */
     @Operation(summary = "파일 업로드 처리")
-    @ApiResponse(responseCode = "201", description = "파일 업로드 처리, 업로드 성공시에는 업로드 완료된 파일 목록을 반환한다. 요청시 반드시 요청헤더에 multipart/form-data 형식으로 전송") // 응답코드 명시
+    @ApiResponse(responseCode = "201", description = "파일 업로드 처리, 업로드 성공시에는 업로드 완료된 파일 목록을 반환한다. 요청시 반드시 요청헤더에 multipart/form-data 형식으로 전송")
+    // 응답코드 명시
     @Parameters({
-            @Parameter(name="gid", description = "파일 그룹 ID", required = true), // 빨간색별표가 붙음 / 필수라고
+            @Parameter(name = "gid", description = "파일 그룹 ID", required = true), // 빨간색별표가 붙음 / 필수라고
             @Parameter(name = "location", description = "파일 그룹 내에서 위치 코드"),
             @Parameter(name = "file", description = "업로드 파일, 복수개 전송 가능", required = true)
     }) // 설명단거 / 다른사람들이 보기때문에 설명을 잘 달아줘야함 / 로컬호스트3000/apidocs/html 에 있음
@@ -128,15 +129,16 @@ public class FileController {
         return new JSONData(item);
     }
 
-    @DeleteMapping({"/deletes/{gid}","/deletes/{gid}/{location}"})
+    @DeleteMapping({"/deletes/{gid}", "/deletes/{gid}/{location}"})
     public JSONData delete(@PathVariable("gid") String gid,
-                           @PathVariable(name="location", required = false) String location) {
+                           @PathVariable(name = "location", required = false) String location) {
 
         List<FileInfo> items = deleteService.deletes(gid, location);
 
         return new JSONData(items);
     }
- // 썸네일! RequestThumb 을 들어가면 크기라던지 그런거 정의해놨음
+
+    // 썸네일! RequestThumb 을 들어가면 크기라던지 그런거 정의해놨음
     @GetMapping("/thumb")
     public void thumb(RequestThumb form, HttpServletResponse response) {
         String path = thumbnailService.create(form);
@@ -154,12 +156,25 @@ public class FileController {
             OutputStream out = response.getOutputStream();
             out.write(bis.readAllBytes());
             // 바디쪽에 출력해서 이미지가 바로 보이게 만듦
-        } catch (IOException e) {}
+        } catch (IOException e) {
+        }
     }
 
     @GetMapping("/select/{seq}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void select(@PathVariable("seq") Long seq) {
         imageService.select(seq);
+    }
+
+
+    /**
+     * 파일 그룹작업 완료 처리
+     *
+     * @param gid
+     * @param location
+     */
+    @GetMapping("/done/{gid}")
+    public void processDone(@PathVariable("gid") String gid, @RequestParam(name = "location", required = false) String location) {
+        doneService.process(gid, location);
     }
 }

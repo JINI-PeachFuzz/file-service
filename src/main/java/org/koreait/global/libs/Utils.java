@@ -120,7 +120,7 @@ public class Utils {
      * @return
      */
     public String getAuthToken() {
-        String auth = request.getHeader("Authorization");
+        String auth = request.getHeader("Authorization"); // 이게 키면 값으로 토큰이 오는거
 
         return StringUtils.hasText(auth) ? auth.substring(7).trim() : null;
     }
