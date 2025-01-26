@@ -17,7 +17,7 @@ public class ServiceUrlTest {
     @Test
     void urlTest() {
         String  url = utils.serviceUrl("file-service", "/upload"); // http://localhost:3002/upload 이렇게 나옴
-//        System.out.println(url);
+        System.out.println(url);
 //        System.out.println("test");
     }
 }

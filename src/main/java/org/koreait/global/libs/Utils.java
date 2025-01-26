@@ -124,4 +124,16 @@ public class Utils {
 
         return StringUtils.hasText(auth) ? auth.substring(7).trim() : null;
     }
+
+    /**
+     * 전체 주소
+     *
+     * @param url
+     * @return
+     */
+    public String getUrl(String url) {
+        int port = request.getServerPort();
+        String _port = port == 80 || port == 443 ? "" : ":" + port;
+        return String.format("%s://%s%s%s%s", request.getScheme(), request.getServerName(), _port, request.getContextPath(), url);
+    }
 }
