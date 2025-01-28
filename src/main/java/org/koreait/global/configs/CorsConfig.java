@@ -11,6 +11,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.Arrays;
 import java.util.List;
 
+// 도메인별로 출처를 공유할 수 있게 해주는 연결고리같은거 // 안될경우 데이터를 차단
 @Configuration
 public class CorsConfig {
 
